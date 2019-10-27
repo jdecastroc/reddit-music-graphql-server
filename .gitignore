@@ -1,0 +1,8 @@
+package-lock.json
+.nyc_output
+.eslintcache
+node_modules
+coverage
+dist
+benchmarkDist
+npm
