@@ -1,17 +1,46 @@
 import * as cheerio from "cheerio";
 import * as request from 'request';
-import { Playlist } from "../resolvers";
+import { Playlist, Song } from "../resolvers";
 
-function getSubRedditSongs(subRedditName: string, sortBy: SortingOptions = 'hot'): Promise<string[]> {
+function getYouTubeID(url: string) {
+  var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+  var match = url.match(regExp);
+  if (match && match[7].length === 11) {
+      return match[7];        
+  }
+  return null;
+}
+
+function getSubRedditSongs(subRedditName: string, sortBy: SortingOptions = 'hot'): Promise<Song[]> {
   return new Promise((resolve, reject) => {
     const url = `https://www.reddit.com/r/${subRedditName}${sortBy === 'new' ? '/new/' : ''}`;
     try {
       request(url, (err, res, body) => {
-        const redditSongs: string[] = [];
+        const redditSongs: Song[] = [];
         const $ = cheerio.load(body);
-        $('a').each((e, anchorElement) => {
-          if($(anchorElement).attr('href').includes('youtu')) {
-            redditSongs.push($(anchorElement).attr('href'))
+        $('div').each((index, divElement) => {
+          if ($(divElement).attr('data-click-id') === 'background') { 
+            const song: Song = {
+              name: null,
+              url: null,
+              imageUrl: null,
+            }
+            $(divElement).find('a').map((index, nestedAnchorElement) => {
+              if ($(nestedAnchorElement).attr('href').includes('v=')) {
+                song.url = $(nestedAnchorElement).attr('href');
+              }
+              if($(nestedAnchorElement).attr('href').includes(`/r/${subRedditName}/comments/`) && $(nestedAnchorElement).attr('data-click-id') === 'body') {
+                $(nestedAnchorElement).find('h3').map((index, headerElement) => {
+                  song.name = $(headerElement).text()
+                }).get()
+              }
+              
+            });
+            if(song.url && song.name) {
+              const songId = getYouTubeID(song.url);
+              song.imageUrl = songId ? `https://img.youtube.com/vi/${songId}/0.jpg` : null;
+              redditSongs.push(song);
+            }
           }
         })
         resolve(redditSongs);

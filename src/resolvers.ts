@@ -19,5 +19,11 @@ export type MusicGenre = {
 
 export type Playlist = {
   name: string;
-  songs: string[];
+  songs: Song[];
+}
+
+export type Song = {
+  name: string;
+  url: string;
+  imageUrl: string;
 }

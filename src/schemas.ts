@@ -8,7 +8,13 @@ export default gql`
 
   type Playlist {
     name: String,
-    songs: [String]
+    songs: [Song]
+  }
+
+  type Song {
+    name: String,
+    url: String,
+    imageUrl: String
   }
 
   type Query {

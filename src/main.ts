@@ -1,6 +1,3 @@
-// import * as cheerio from "cheerio";
-// import * as request from 'request';
-// import getPlaylistFromSubReddits from "./parser/sub-reddits-songs";
 import { ApolloServer } from 'apollo-server';
 
 import resolvers from './resolvers';
