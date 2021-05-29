@@ -1,30 +1,36 @@
 {
   "name": "reddit-music-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "GraphQL server used to fetch and serve music reddits data",
   "scripts": {
-    "build": "echo Starting $NODE_ENV build process... && webpack --config webpack.$NODE_ENV.js",
-    "start": "node dist/server",
-    "dev": "NODE_ENV=development npm run build"
+    "build": "webpack --config webpack.production.js",
+    "start": "node dist/main",
+    "dev": "cross-env NODE_ENV=development npm run build && npm run start"
   },
   "engines": {
-    "node": "10.15.3"
+    "node": "14.x"
   },
-  "author": "@jdecastroc",
-  "license": "ISC",
+  "author": "Jorge de Castro <jdecastrocabello@gmail.com> (https://github.com/jdecastroc)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jdecastroc/reddit-music-graphql-server"
+  },
   "dependencies": {
-    "apollo-server": "^2.9.7",
-    "cheerio": "^1.0.0-rc.3",
-    "graphql": "^14.5.8",
+    "apollo-server": "^2.25.0",
+    "apollo-server-plugin-response-cache": "^0.9.0",
+    "graphql": "^14.7.0",
+    "puppeteer": "^9.1.1",
     "request": "^2.88.0"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.13",
-    "@types/webpack-env": "^1.14.1",
+    "@types/node": "^15.6.1",
     "@types/request": "^2.48.3",
+    "@types/webpack-env": "^1.14.1",
     "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.3",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.6.4",
+    "typescript": "^4.3.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
     "webpack-merge": "^4.2.2",

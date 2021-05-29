@@ -1,13 +1,13 @@
-import getMusicSubReddits from "./parser/music-sub-reddits";
-import getPlaylistFromSubReddits from "./parser/sub-reddits-songs";
+import getSongsFromReddits from "./parser/get-reddit-songs";
+import getMusicReddits from "./parser/get-music-reddits";
 
 export default {
   Query: {
     reddits: async (): Promise<MusicGenre[]> => {
-      return await getMusicSubReddits();
+      return await getMusicReddits();
     },
-    playlist: async(root, { redditUrls }): Promise<Playlist[]> => {
-      return await getPlaylistFromSubReddits(redditUrls);
+    playlist: async (root, { redditUrls }): Promise<Playlist[]> => {
+      return await getSongsFromReddits(redditUrls);
     }
   }
 };
@@ -23,6 +23,7 @@ export type Playlist = {
 }
 
 export type Song = {
+  id: string;
   name: string;
   url: string;
   imageUrl: string;

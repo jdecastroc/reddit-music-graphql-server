@@ -1,13 +1,16 @@
 import { ApolloServer } from 'apollo-server';
-
-import resolvers from './resolvers';
-import typeDefs from './schemas';
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
+import resolvers from '../src/resolvers';
+import typeDefs from '../src/schemas';
 
 const server = new ApolloServer({
   resolvers,
   typeDefs,
   tracing: true,
   cacheControl: true,
+  plugins: [responseCachePlugin()],
+  playground: true,
+  introspection: true,
 });
 
 server.listen({ port: process.env.PORT || 4000 })

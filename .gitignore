@@ -6,3 +6,4 @@ coverage
 dist
 benchmarkDist
 npm
+.vercel
